@@ -1,6 +1,6 @@
 import os
-from datetime import date
-today = date.today()
+import datetime
+now = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 ### User-Chosen Parameters ###
 parameters = {
@@ -20,7 +20,7 @@ parameters = {
 }
 
 ### Setting up output folders and metadata file ###
-output_path = f'outputs/{today}_{parameters["locality_tag"]}_{parameters["race_tag"]}'
+output_path = f'outputs/{now}_{parameters["locality_tag"]}_{parameters["race_tag"]}'
 metadata_path = f'{output_path}/metadata.txt'
 os.system('echo Creating an output folder for these parameters...')
 os.system(f'mkdir -p {output_path}') # think about how to re-do runs...
