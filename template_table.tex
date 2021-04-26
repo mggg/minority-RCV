@@ -5,40 +5,52 @@
 %%%%%%%%%%%%
 
 \documentclass{report}
-\usepackage{xspace}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{xspace, parskip}
+\usepackage[margin=1in]{geometry}
 
 \newcommand{\POC}{POC\xspace} %could also be e.g. Black, Hispanic etc.
 
 \begin{document}
 
-We use four different models to estimate minority representation under ranked choice voting. All the models take a very simple input consisting of two values: (1) the support from \POC voters for \POC candidates, and (2) the support from non-\POC voters for \POC candidates. The Placket-Luce-Dirichlet (PL-D) and Bradley-Terry-Dirichlet (BT-D) models rely on classical probabilistic models of ranking from the literature. The Alternating crossover (AC) and Cambridge sampler (CS) models rely on specific assumptions on how voters vote: the AC model assumes that crossover voters alternate between outgroup and ingroup candidates, while the CS model uses ballot data from a decade's worth of Cambridge MA city council races (which were ranked choice) to model voter behavior. We also consider five scenarios of how voters divide their support among non-\POC and \POC candidates.
+We use four different models to estimate minority representation under ranked choice voting. All the models take a very simple input consisting of two values: 
+\begin{itemize}
+\item[(1)] the support from \POC voters for \POC -preferred candidates, and 
+\item[(2)] the support from non-\POC voters for \POC -preferred candidates
+\end{itemize}
+The Placket-Luce-Dirichlet (PL) and Bradley-Terry-Dirichlet (BT) models rely on classical probabilistic models of ranking from the literature. The Alternating crossover (AC) and Cambridge sampler (CS) models rely on specific assumptions on how voters vote: the AC model assumes that crossover voters alternate between outgroup and ingroup candidates, while the CS model uses ballot data from a decade's worth of Cambridge MA city council races (which were ranked choice) to model voter behavior. We also consider five scenarios of how voters divide their support among non-\POC and \POC candidates. For the PL and BT models these scenarios are encoded in a parameter $\alpha$ displayed in the second row of the table below.
 
-Scenario A: unanimous order (all voters agree on who are the best candidates in each group).
+\begin{itemize}
+\item Scenario A: unanimous order (all voters agree on who are the best candidates in each group).
+\item Scenario B: \POC vary \POC (POC voters vary preferences among \POC -preferred candidates).
+\item Scenario C: all vary order (no agreement on strongest candidates).
+\item Scenario D: non-\POC vary non-\POC (non-\POC voters don’t agree on strongest candidates).
+\item Scenario E: generic (all levels of agreement equally likely).
+\end{itemize}
 
-Scenario B: \POC vary \POC (POC voters vary preferences among \POC candidates).
 
-Scenario C: all vary order (no agreement on strongest candidates).
-
-Scenario D: non-\POC vary non-\POC (non-\POC voters don’t agree on strongest candidates).
-
-Scenario E: generic (all levels of agreement equally likely).
-
-\begin{table}[ht]
+\begin{table}[h]
 \centering
-\begin{tabular}{ |l||c|c|c|c|c| }
+\begin{tabular}{ |c|c|c|c|c|c| }
 \hline
- & Scenario A & Scenario B & Scenario C & Scenario D & Scenario E \\
- \hline
+\cellcolor{Gray}{\bf $\cdot$ seats}
+ & Scenario A & Scenario B & Scenario C & Scenario D & average \\
+\cline{2-6}
+\cellcolor{Gray}{\bf $\cdot$ C / $\cdot$ candidates}
+ & (.5, .5, .5, .5) & (2, .5, .5, .5) &  (2, 2, 2, 2) &  
+ (.5, .5, 2, 2) & (1, 1, 1, 1) \\
+\hline \hline
+PL (Individual draws)  & $\cdot$  & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
 \hline
-PL-D  & ? & ? & ? & ? & ? \\
+BT (Paired comparisons) & $\cdot$  & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
 \hline
-BT-D  & ? & ? & ? & ? & ?  \\
+Alternating crossover & $\cdot$  & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
 \hline
-AC & ? & ? & ? & ? & ? \\
-\hline
-CS & ? & ? & ? & ? & ? \\
+Cambridge sampler & $\cdot$  & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
 \hline
 \end{tabular}
 \end{table}
+
 
 \end{document}
