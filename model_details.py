@@ -8,15 +8,6 @@ import random
 from vote_transfers import cincinnati_transfer
 from ballot_generators import paired_comparison_mcmc
 
-def sum_to_one(list_of_vectors):
-    '''
-    Fixes small errors in place to make sure vectors sum to 1
-    '''
-    for v in list_of_vectors:
-        n = np.argmax(v) #fix highest value
-        v[n] = 1-sum([x for i,x in enumerate(v) if i!=n])
-
-
 def Cambridge_ballot_type(
     poc_share = 0.33,
     poc_support_for_poc_candidates = 0.7,
@@ -191,6 +182,13 @@ def Cambridge_ballot_type(
             num_seats
         )
         poc_elected_Cambridge_atlarge[scenario].append(len([x for x in atlargewinners if x[0] == 'A']))
+
+        if verbose and n == 1:
+            print(scenario)
+            print("--ballots--")
+            for b in ballots:
+                print(b)
+            print("-----------")
     return poc_elected_Cambridge, poc_elected_Cambridge_atlarge
 
 
@@ -285,9 +283,12 @@ def BABABA(
         a = int(num_ballots*(1-poc_share)*white_support_for_poc_candidates)
         babababallots.extend([white_cross_ballots(scenario)[0][:max_ballot_length] for x in range(a)])
 
-        if verbose:
+        if verbose and n == 1:
             print(scenario)
-            print(babababallots)
+            print("--ballots--")
+            for b in babababallots:
+                print(b)
+            print("-----------")
 
         #winners
         winners = cw.rcv_run(babababallots.copy(), candidates, seats_open, cincinnati_transfer)
@@ -309,7 +310,8 @@ def luce_dirichlet(
     num_poc_candidates = 2,
     num_white_candidates = 3,
     concentrations = [1.0,1.0,1.0,1.0], #poc_for_poc, poc_for_w, w_for_poc, w_for_w.
-    max_ballot_length = None
+    max_ballot_length = None,
+    verbose=False
 ):
     if max_ballot_length == None:
         max_ballot_length = num_poc_candidates+num_white_candidates
@@ -327,25 +329,25 @@ def luce_dirichlet(
         noise1 = list(np.random.dirichlet([alphas[2]]*num_candidates[0]))+list(np.random.dirichlet([alphas[3]]*num_candidates[1]))
         white_support_vector = []
         poc_support_vector = []
-        for i, (c, r) in enumerate(race_of_candidate.items()):
-            if r == 'A':
+        for i, c in enumerate(candidates):
+            if race_of_candidate[c] == 'A':
                 white_support_vector.append((white_support_for_poc_candidates*noise1[i]))
                 poc_support_vector.append((poc_support_for_poc_candidates*noise0[i]))
-            elif r == 'B':
+            elif race_of_candidate[c] == 'B':
                 white_support_vector.append((white_support_for_white_candidates*noise1[i]))
                 poc_support_vector.append((poc_support_for_white_candidates*noise0[i]))
+
         ballots = []
         numballots = num_ballots
-        sum_to_one([white_support_vector, poc_support_vector])
         #white
         for i in range(int(numballots*(1-poc_share))):
           ballots.append(
-              np.random.choice(list(race_of_candidate.keys()), size=len(race_of_candidate), p=white_support_vector, replace=False)
+              np.random.choice(candidates, size=len(candidates), p=white_support_vector, replace=False)
           )
         #poc
         for i in range(int(numballots*poc_share)):
           ballots.append(
-              np.random.choice(list(race_of_candidate.keys()), size=len(race_of_candidate), p=poc_support_vector, replace=False)
+              np.random.choice(candidates, size=len(candidates), p=poc_support_vector, replace=False)
           )
         #winners
         ballots = [b[:max_ballot_length] for b in ballots]
@@ -353,6 +355,15 @@ def luce_dirichlet(
         poc_elected_luce.append(len([w for w in winners if w[0]=='A']))
         atlargewinners = cw.at_large_run(ballots.copy(),candidates,seats_open)
         poc_elected_luce_atlarge.append(len([x for x in atlargewinners if x[0] == 'A']))
+
+        if verbose and n == 1:
+            print(alphas)
+            print(white_support_vector)
+            print(poc_support_vector)
+            print("--ballots--")
+            for b in babababallots:
+                print(b)
+            print("-----------")
 
     return poc_elected_luce, poc_elected_luce_atlarge
 
@@ -368,7 +379,8 @@ def bradley_terry_dirichlet(
     num_poc_candidates = 2,
     num_white_candidates = 3,
     concentrations = [1.0,1.0,1.0,1.0], #poc_for_poc, poc_for_w, w_for_poc, w_for_w
-    max_ballot_length = None
+    max_ballot_length = None,
+    verbose=False
 ):
     if max_ballot_length == None:
         max_ballot_length = num_poc_candidates+num_white_candidates
@@ -386,11 +398,11 @@ def bradley_terry_dirichlet(
         noise1 = list(np.random.dirichlet([alphas[2]]*num_candidates[0]))+list(np.random.dirichlet([alphas[3]]*num_candidates[1]))
         white_support_vector = []
         poc_support_vector = []
-        for i, (c, r) in enumerate(race_of_candidate.items()):
-            if r == 'A':
+        for i, c in enumerate(candidates):
+            if race_of_candidate[c] == 'A':
                 white_support_vector.append((white_support_for_poc_candidates*noise1[i]))
                 poc_support_vector.append((poc_support_for_poc_candidates*noise0[i]))
-            elif r == 'B':
+            elif race_of_candidate[c] == 'B':
                 white_support_vector.append((white_support_for_white_candidates*noise1[i]))
                 poc_support_vector.append((poc_support_for_white_candidates*noise0[i]))
 
@@ -415,5 +427,14 @@ def bradley_terry_dirichlet(
         poc_elected.append(len([w for w in winners if w[0]=='A']))
         atlargewinners = cw.at_large_run(ballots.copy(),candidates,seats_open)
         poc_elected_atlarge.append(len([x for x in atlargewinners if x[0] == 'A']))
+
+        if verbose and n == 1:
+            print(alphas)
+            print(white_support_vector)
+            print(poc_support_vector)
+            print("--ballots--")
+            for b in babababallots:
+                print(b)
+            print("-----------")
 
     return poc_elected, poc_elected_atlarge
