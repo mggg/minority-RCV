@@ -1,0 +1,10 @@
+This folder contains RCV analyses made from the following parameters:
+
+locality_tag = VA-Beach
+race_tag = POC
+poc_cvaps = [0.342]
+support_for_POC = [[0.65, 0.18]]
+seats = [[5, 5, 5], [5, 3, 7], [3, 3, 3], [3, 2, 4]]
+
+Output files will be named like: poc-cvaps_POC-support-for-POC_White-support-for-POC_seats-open_num-C-cands_num-W-Cands.csv
+

@@ -4,18 +4,17 @@ now = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 ### User-Chosen Parameters ###
 parameters = {
-  "locality_tag":"chelan",
-  "race_tag":"POC_CVAP",
-  "poc_cvaps":[0.193, 0.227],
+  "locality_tag":"VA-Beach",
+  "race_tag":"POC",
+  "poc_cvaps":[0.342],
   "support_for_POC":[
-    [0.95, 0.05], # [POC for POC, White for POC]
-    [0.75, 0.20],
-    [0.60, 0.40]
+    [0.65, 0.18], # [POC for POC, White for POC]
   ],
   "seats":[
-    [3, 3, 3], # [seats open, C-cands, W-cands]
-    [5, 5, 5],
-    [7, 7, 7]
+    [5, 5, 5], # [seats open, C-cands, W-cands]
+    [5, 3, 7],
+    [3, 3, 3],
+    [3, 2, 4],
   ]
 }
 
@@ -36,4 +35,5 @@ for support_for_POC in parameters['support_for_POC']:
     for poc_cvaps in parameters['poc_cvaps']:
       RCV_run = f'{poc_cvaps}_{support_for_POC[0]}_{support_for_POC[1]}_{seats[0]}_{seats[1]}_{seats[2]}'
       analysis_path = f'{output_path}/{RCV_run}.csv'
-      os.system(f"sbatch runcityargs.sh {RCV_run} {analysis_path}")
+      # os.system(f"sbatch runcityargs.sh {RCV_run} {analysis_path}")
+      os.system(f"python run_all_models_with_sys_args.py {RCV_run} > {analysis_path}")
