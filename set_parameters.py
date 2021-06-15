@@ -4,17 +4,14 @@ now = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 ### User-Chosen Parameters ###
 parameters = {
-  "locality_tag":"VA-Beach",
+  "locality_tag":"gridlandia",
   "race_tag":"POC",
-  "poc_cvaps":[0.342],
+  "poc_cvaps":[0.20],
   "support_for_POC":[
-    [0.65, 0.18], # [POC for POC, White for POC]
+    [0.56, 0.18], # [POC for POC, White for POC]
   ],
   "seats":[
-    [5, 5, 5], # [seats open, C-cands, W-cands]
-    [5, 3, 7],
-    [3, 3, 3],
-    [3, 2, 4],
+    [3, 3, 3], # [seats open, C-cands, W-cands]
   ]
 }
 
